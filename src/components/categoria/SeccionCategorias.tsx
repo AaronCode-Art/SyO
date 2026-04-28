@@ -1,6 +1,6 @@
 import React from 'react';
 import { useCategorias } from '../../hooks/categoria/useCategorias';
-import './seccionCategorias.css';
+import './seccioncategorias.css';
 
 const SeccionCategorias: React.FC = () => {
   const { categorias, loading, error } = useCategorias();
