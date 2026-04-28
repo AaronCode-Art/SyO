@@ -1,5 +1,5 @@
 import api from '../api/Api';
-import type { CategoriaLista } from '../types/Categoria.types';
+import type { CategoriaDetalle, CategoriaLista } from '../types/Categoria.types';
 
 export const categoriaService = {
 
@@ -15,8 +15,9 @@ export const categoriaService = {
   /**
    * Obtiene el detalle completo de una categoría (opcional por ahora)
    */
-  getDetalle: async (id: string): Promise<any> => {
+  getDetalle: async (id: string): Promise<CategoriaDetalle> => {
     const response = await api.get(`/categorias/${id}`);
     return response.data;
   }
+
 };

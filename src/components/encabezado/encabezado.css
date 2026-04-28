@@ -37,6 +37,11 @@
   overflow-x: hidden;
 }
 
+/* SIN BANNER */
+.site-wrapper.no-banner {
+  min-height: auto;
+}
+
 /* ===== HEADER ===== */
 .site-header {
   position: sticky;
@@ -368,8 +373,14 @@
 
 /* ===== TEXTO HERO ===== */
 .hero-text {
-  position: relative;
-  z-index: 2;
+      position: relative;
+    z-index: 2;
+
+     display: flex;
+    flex-direction: column;
+
+    align-items: flex-start;
+    text-align: left;
 }
 
 .hero-label {

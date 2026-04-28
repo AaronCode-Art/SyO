@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useCategorias } from '../../hooks/categoria/useCategorias';
 import './seccioncategorias.css';
 
@@ -38,9 +39,9 @@ const SeccionCategorias: React.FC = () => {
 
         <div className="categorias-cuadricula">
           {categorias.map((categoria) => (
-            <a
+            <Link
               key={categoria.idcategoria}
-              href={`/categoria/${categoria.idcategoria}`}
+              to={`/categoria/${categoria.idcategoria}`}
               className="categoria-card"
             >
               {categoria.imgurl && (
@@ -60,7 +61,7 @@ const SeccionCategorias: React.FC = () => {
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </div>
-            </a>
+            </Link>
           ))}
         </div>
 

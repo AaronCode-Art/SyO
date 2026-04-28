@@ -40,4 +40,29 @@ getMasBaratos: async (limit: number = 5): Promise<ProductoLista[]> => {
   const data: PageResponse<ProductoLista> = response.data;
   return data.content.slice(0, limit);
 },
+
+/**
+   * BÚSQUEDA AVANZADA CON FILTROS
+   * Este método es el que usa tu página de productos
+   */
+  buscarConFiltros: async (
+    categoriaId?: string,
+    precioMin?: number,
+    precioMax?: number,
+    sort: 'asc' | 'desc' = 'asc'
+  ): Promise<PageResponse<ProductoLista>> => {
+
+    const params: any = {
+      page: 0,
+      size: 50,
+      sort: sort === 'asc' ? 'preciodesct,asc' : 'preciodesct,desc'
+    };
+
+    if (categoriaId) params.categoriaId = categoriaId;
+    if (precioMin !== undefined) params.precioMin = precioMin;
+    if (precioMax !== undefined) params.precioMax = precioMax;
+
+    const response = await api.get('/productos', { params });
+    return response.data;
+  }
 };

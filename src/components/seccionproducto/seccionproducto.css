@@ -6,6 +6,7 @@
   background: #0d0d0d;
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
 
 /* Grid de fondo */
@@ -43,7 +44,7 @@
   padding-left: 16px;
 }
 
-/* Línea roja vertical a la izquierda */
+/* Línea roja */
 .titulo-categoria::before {
   content: '';
   position: absolute;
@@ -56,7 +57,7 @@
   border-radius: 2px;
 }
 
-/* ===== BOTÓN VER MÁS ===== */
+/* ===== BOTÓN ===== */
 .ver-mas-top {
   display: inline-flex;
   align-items: center;
@@ -75,7 +76,7 @@
   flex-shrink: 0;
   align-self: flex-end;
   margin-bottom: 4px;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  transition: all 0.25s ease;
 }
 
 .ver-mas-top:hover {
@@ -84,7 +85,7 @@
   background: rgba(255, 59, 59, 0.07);
 }
 
-/* ===== FILA HORIZONTAL ===== */
+/* ===== DESKTOP ===== */
 .fila-productos {
   display: flex;
   gap: 16px;
@@ -92,6 +93,7 @@
   padding-bottom: 8px;
   position: relative;
   z-index: 1;
+
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
@@ -100,23 +102,37 @@
   display: none;
 }
 
-/* ===== TARJETA CONTENEDOR ===== */
 .tarjeta-contenedor {
   flex: 0 0 240px;
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== TABLET ===== */
 @media (max-width: 768px) {
+
   .seccion-productos-inicio {
     padding: 60px 4%;
   }
 
+  .fila-productos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    overflow-x: visible;
+  }
+
   .tarjeta-contenedor {
-    flex: 0 0 210px;
+    flex: unset;
+    width: 100%;
+  }
+
+  .header-seccion {
+    align-items: center;
   }
 }
 
+/* ===== MOBILE ===== */
 @media (max-width: 480px) {
+
   .seccion-productos-inicio {
     padding: 48px 4%;
   }
@@ -125,6 +141,7 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
+    margin-bottom: 26px;
   }
 
   .ver-mas-top {
@@ -132,7 +149,20 @@
     margin-bottom: 0;
   }
 
+  /* 🔥 GRID 2 COLUMNAS */
+  .fila-productos {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    overflow: visible;
+  }
+
   .tarjeta-contenedor {
-    flex: 0 0 185px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .titulo-categoria {
+    font-size: 28px;
   }
 }

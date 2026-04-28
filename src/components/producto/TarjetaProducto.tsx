@@ -8,8 +8,24 @@ import './tarjetaproducto.css';
  * Componente de presentación (Dumb Component).
  * Solo renderiza la UI del producto. Sin lógica de datos ni hooks.
  */
-const TarjetaProducto: React.FC<{ producto: ProductoLista }> = ({ producto }) => {
+
+interface Props {
+  producto: ProductoLista;
+  onComprar?: (producto: ProductoLista) => void;   // Acción del botón comprar
+}
+
+const TarjetaProducto: React.FC<Props> = ({ producto, onComprar }) => {
   const sinStock = producto.stock === 0;
+
+  // Función para el botón "Comprar ahora"
+  const handleComprarClick = (e: React.MouseEvent) => {
+    e.preventDefault();      // Evita que el Link navegue
+    e.stopPropagation();     // Evita que se active el clic de la tarjeta
+    if (onComprar && !sinStock) {
+      onComprar(producto);
+    }
+  };
+
 
   return (
     <Link

@@ -1,222 +1,184 @@
-/* src/pages/inicio/iniciopage.css */
-
 /* =====================================================
-   1. PÁGINA GENERAL
-   ===================================================== */
-.inicio-page {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  background: #0d0d0d;
-}
+   SECCIÓN PRODUCTOS
+===================================================== */
 
-/* Loading pantalla completa */
-.inicio-loading {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  min-height: 100vh;
-  background: #0d0d0d;
-}
-
-.inicio-loading span {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.2);
-  animation: dot-pulse 1.2s ease-in-out infinite;
-}
-
-.inicio-loading span:nth-child(2) { animation-delay: 0.2s; }
-.inicio-loading span:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dot-pulse {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  50%       { opacity: 1;   transform: scale(1.1); }
-}
-
-/* =====================================================
-   2. CONTENIDO PRINCIPAL
-   ===================================================== */
-.contenido-principal {
-  flex: 1;
-  width: 100%;
-  padding: 20px 0;
+.seccion-productos-inicio {
+  padding: 70px 5%;
   background: #0d0d0d;
   position: relative;
+  overflow: hidden;
 }
 
-/* Grid de fondo continuo detrás de toda la página */
-.contenido-principal::before {
-  content: '';
+/* grid futurista */
+.seccion-productos-inicio::before {
+  content: "";
   position: absolute;
   inset: 0;
+
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+
   background-size: 60px 60px;
+
   pointer-events: none;
-  z-index: 0;
 }
 
 /* =====================================================
-   3. SECCIÓN PRODUCTOS
-   ===================================================== */
-.seccion-productos-inicio {
-  margin-bottom: 0;
-  padding: 64px 5%;
-  width: 100%;
-  position: relative;
-  z-index: 1;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
+   HEADER
+===================================================== */
 
-/* Header (titulo + botón ver más) */
 .header-seccion {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  margin-bottom: 32px;
-  gap: 16px;
+  gap: 20px;
+
+  margin-bottom: 34px;
+
+  position: relative;
+  z-index: 1;
 }
 
 /* =====================================================
-   4. TÍTULO
-   ===================================================== */
+   TITULO
+===================================================== */
+
 .titulo-categoria {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(30px, 4vw, 46px);
-  font-weight: 400;
+  font-size: clamp(34px, 4vw, 52px);
   letter-spacing: 2px;
-  color: #ffffff;
-  line-height: 1;
+  color: white;
+
   position: relative;
-  padding-left: 16px;
+  padding-left: 18px;
+
+  line-height: 1;
 }
 
-/* Barra roja vertical izquierda */
 .titulo-categoria::before {
-  content: '';
+  content: "";
+
   position: absolute;
   left: 0;
   top: 50%;
+
   transform: translateY(-50%);
-  width: 3px;
-  height: 65%;
+
+  width: 4px;
+  height: 70%;
+
   background: #FF3B3B;
-  border-radius: 2px;
+  border-radius: 20px;
 }
 
 /* =====================================================
-   5. BOTÓN VER MÁS
-   ===================================================== */
-.ver-mas,
+   BOTON
+===================================================== */
+
 .ver-mas-top {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-family: 'DM Sans', sans-serif;
+  gap: 8px;
+
+  padding: 11px 18px;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.4);
-  text-decoration: none;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 6px;
-  padding: 9px 18px;
-  white-space: nowrap;
-  flex-shrink: 0;
-  align-self: flex-end;
-  margin-bottom: 2px;
-  background: transparent;
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+
+  color: rgba(255,255,255,0.65);
+
+  border: 1px solid rgba(255,255,255,0.1);
+
+  transition: 0.25s;
 }
 
-.ver-mas:hover,
 .ver-mas-top:hover {
-  color: #ffffff;
-  border-color: rgba(255, 59, 59, 0.4);
-  background: rgba(255, 59, 59, 0.07);
-  transform: none;
-  box-shadow: none;
+  background: rgba(255,59,59,0.08);
+  border-color: rgba(255,59,59,0.35);
+  color: white;
 }
 
 /* =====================================================
-   6. FILA PRODUCTOS (SCROLL HORIZONTAL)
-   ===================================================== */
+   PRODUCTOS DESKTOP
+===================================================== */
+
 .fila-productos {
   display: flex;
-  align-items: stretch;
-  gap: 16px;
+  gap: 18px;
+
   overflow-x: auto;
-  scroll-behavior: smooth;
+
   scrollbar-width: none;
   -ms-overflow-style: none;
-  padding-bottom: 8px;
+
   position: relative;
+  z-index: 1;
 }
 
 .fila-productos::-webkit-scrollbar {
   display: none;
 }
 
-/* Fades laterales adaptados al fondo oscuro */
-.fila-productos::before,
-.fila-productos::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  width: 48px;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-
-.fila-productos::before {
-  left: 0;
-  background: linear-gradient(to right, #0d0d0d, transparent);
-}
-
-.fila-productos::after {
-  right: 0;
-  background: linear-gradient(to left, #0d0d0d, transparent);
-}
-
-/* Tarjeta contenedor */
+/* cards */
 .tarjeta-contenedor {
   flex: 0 0 240px;
-  display: flex;
-  justify-content: center;
 }
 
 /* =====================================================
-   7. RESPONSIVE
-   ===================================================== */
-@media (max-width: 1024px) {
-  .seccion-productos-inicio { padding: 56px 4%; }
-  .tarjeta-contenedor { flex: 0 0 220px; }
-}
+   TABLET
+===================================================== */
 
 @media (max-width: 768px) {
-  .seccion-productos-inicio { padding: 48px 4%; }
-  .header-seccion { align-items: flex-start; }
-  .tarjeta-contenedor { flex: 0 0 200px; }
+
+  .seccion-productos-inicio {
+    padding: 56px 4%;
+  }
+
+  .tarjeta-contenedor {
+    flex: 0 0 210px;
+  }
 }
 
+/* =====================================================
+   MOBILE PRO
+===================================================== */
+
 @media (max-width: 480px) {
-  .seccion-productos-inicio { padding: 40px 4%; }
+
+  .seccion-productos-inicio {
+    padding: 46px 4%;
+  }
+
   .header-seccion {
     flex-direction: column;
     align-items: flex-start;
     gap: 12px;
   }
-  .ver-mas,
+
   .ver-mas-top {
     align-self: flex-start;
-    margin-bottom: 0;
   }
-  .tarjeta-contenedor { flex: 0 0 180px; }
+
+  /* 🔥 GRID 2 COLUMNAS */
+  .fila-productos {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 14px;
+
+    overflow-x: visible;
+  }
+
+  .tarjeta-contenedor {
+    width: 100%;
+    min-width: 0;
+  }
 }
