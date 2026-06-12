@@ -1,86 +1,167 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import type { ProductoLista } from '../../types/Producto.types';
+import React, {
+  useState
+} from 'react';
+
+import {
+  Link,
+  useNavigate
+} from 'react-router-dom';
+
+import type {
+  ProductoLista
+} from '../../types/Producto.types';
+
+import ModalAgregarCarrito
+from '../modalcompra/ModalAgregarCarrito';
+
 import './tarjetaproducto.css';
 
-/**
- * TarjetaProducto
- * Componente de presentación (Dumb Component).
- * Solo renderiza la UI del producto. Sin lógica de datos ni hooks.
- */
-
 interface Props {
+
   producto: ProductoLista;
-  onComprar?: (producto: ProductoLista) => void;   // Acción del botón comprar
+
+  onAgregarAlCarrito?: (
+    productoId: string,
+    cantidad?: number
+  ) => Promise<boolean>;
 }
 
-const TarjetaProducto: React.FC<Props> = ({ producto, onComprar }) => {
-  const sinStock = producto.stock === 0;
+const TarjetaProducto: React.FC<Props> = ({
+  producto,
+  onAgregarAlCarrito
+}) => {
 
-  // Función para el botón "Comprar ahora"
-  const handleComprarClick = (e: React.MouseEvent) => {
-    e.preventDefault();      // Evita que el Link navegue
-    e.stopPropagation();     // Evita que se active el clic de la tarjeta
-    if (onComprar && !sinStock) {
-      onComprar(producto);
+  const navigate = useNavigate();
+
+  const [mostrarModal, setMostrarModal] =
+    useState(false);
+
+  const sinStock =
+    producto.stock <= 0;
+
+  const handleComprarClick = async (
+    e: React.MouseEvent
+  ) => {
+
+    e.preventDefault();
+
+    e.stopPropagation();
+
+    if (sinStock) return;
+
+    if (!onAgregarAlCarrito) return;
+
+    const ok =
+      await onAgregarAlCarrito(
+        producto.idproducto,
+        1
+      );
+
+    if (ok) {
+      setMostrarModal(true);
     }
   };
 
-
   return (
-    <Link
-      to={`/producto/${producto.idproducto}`}
-      className="tarjeta-link-wrapper"
-    >
-      <div className="tarjeta-producto">
 
-        {/* Badge descuento */}
-        {producto.descuento > 0 && (
-          <div className="badge-descuento">
-            {producto.descuento}% OFF
-          </div>
-        )}
+    <>
 
-        {/* Imagen */}
-        <div className="tarjeta-imagen-cont">
-          <img
-            src={producto.imgurl}
-            alt={producto.nombre}
-          />
-        </div>
+      <Link
+        to={`/producto/${producto.idproducto}`}
+        className="tarjeta-link-wrapper"
+      >
 
-        {/* Meta */}
-        <div className="meta-info">
-          <span className="tarjeta-marca">{producto.marca}</span>
-          <span className={`stock-status ${sinStock ? 'outstock' : 'instock'}`}>
-            {sinStock ? 'sin stock' : 'en stock'}
-          </span>
-        </div>
+        <div className="tarjeta-producto">
 
-        {/* Nombre */}
-        <h3 className="tarjeta-nombre">{producto.nombre}</h3>
-
-        {/* Precios */}
-        <div className="tarjeta-precios">
           {producto.descuento > 0 && (
-            <span className="precio-original">
-              S/ {producto.precio.toFixed(2)}
-            </span>
+
+            <div className="badge-descuento">
+              {producto.descuento}% OFF
+            </div>
+
           )}
-          <span className="precio-final">
-            S/ {producto.preciodesct.toFixed(2)}
-          </span>
-        </div>
-       
-        {/* Footer */}
-        <div className="tarjeta-footer">
-          <button className="btn-comprar" disabled={sinStock}>
-            {sinStock ? 'Sin stock' : 'Comprar ahora'}
-          </button>
+
+          <div className="tarjeta-imagen-cont">
+
+            <img
+              src={producto.imgurl}
+              alt={producto.nombre}
+            />
+
+          </div>
+
+          <div className="meta-info">
+
+            <span className="tarjeta-marca">
+              {producto.marca}
+            </span>
+
+            <span
+              className={`stock-status ${
+                sinStock
+                  ? 'outstock'
+                  : 'instock'
+              }`}
+            >
+              {sinStock
+                ? 'sin stock'
+                : 'en stock'}
+            </span>
+
+          </div>
+
+          <h3 className="tarjeta-nombre">
+            {producto.nombre}
+          </h3>
+
+          <div className="tarjeta-precios">
+
+            {producto.descuento > 0 && (
+
+              <span className="precio-original">
+                S/ {producto.precio.toFixed(2)}
+              </span>
+
+            )}
+
+            <span className="precio-final">
+              S/ {producto.preciodesct.toFixed(2)}
+            </span>
+
+          </div>
+
+          <div className="tarjeta-footer">
+
+            <button
+              className="btn-comprar"
+              onClick={handleComprarClick}
+              disabled={sinStock}
+            >
+
+              {sinStock
+                ? 'Sin stock'
+                : 'Agregar al carrito'}
+
+            </button>
+
+          </div>
+
         </div>
 
-      </div>
-    </Link>
+      </Link>
+
+      <ModalAgregarCarrito
+        open={mostrarModal}
+        productoNombre={producto.nombre}
+        onCerrar={() =>
+          setMostrarModal(false)
+        }
+        onIrPagar={() =>
+          navigate('/carrito')
+        }
+      />
+
+    </>
   );
 };
 

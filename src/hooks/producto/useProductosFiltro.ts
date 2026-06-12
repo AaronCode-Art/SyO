@@ -1,51 +1,85 @@
-import { useEffect, useState } from 'react';
-import { productoService } from '../../services/productoService';
-import type { ProductoLista, PageResponse } from '../../types/Producto.types';
+// hooks/productos/useProductosFiltros.ts
 
-/**
- * Hook especializado para la página de productos
- * Soporta: filtro por categoría + rango de precio + ordenamiento
- */
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  productoService,
+} from "../../services/productoService";
+
+import type {
+  ProductoLista,
+} from "../../types/Producto.types";
+
+interface Filtros {
+  categoriaId?: string;
+  precioMin?: number;
+  precioMax?: number;
+  sort?: "asc" | "desc";
+}
+
 export const useProductosFiltro = (
-  categoriaId?: string,
-  precioMin?: number,
-  precioMax?: number,
-  sort: 'asc' | 'desc' = 'asc'
+  filtros: Filtros
 ) => {
 
-  const [productos, setProductos] = useState<ProductoLista[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [productos, setProductos] =
+    useState<ProductoLista[]>([]);
 
-  useEffect(() => {
-    const cargarProductos = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const [loading, setLoading] =
+    useState(true);
 
-        // Llamamos al método avanzado del service
-        const data: PageResponse<ProductoLista> = await productoService.buscarConFiltros(
-          categoriaId,
-          precioMin,
-          precioMax,
-          sort
+  // ← NUEVO
+  const [error, setError] =
+    useState<string | null>(null);
+
+ useEffect(() => {
+
+  const cargar = async () => {
+
+    try {
+
+      setLoading(true);
+
+      setError(null);
+
+      const data =
+        await productoService.buscarConFiltros(
+          filtros.categoriaId,
+          filtros.precioMin,
+          filtros.precioMax,
+          filtros.sort
         );
 
-        setProductos(data.content);
-      } catch (err) {
-        console.error('Error al cargar productos con filtros:', err);
-        setError('No se pudieron cargar los productos');
-      } finally {
-        setLoading(false);
-      }
-    };
+      setProductos(data.content);
 
-    cargarProductos();
-  }, [categoriaId, precioMin, precioMax, sort]);   // ← Dependencias importantes
+    } catch (err) {
 
-  return { 
-    productos, 
-    loading, 
-    error 
+      console.error(err);
+
+      setError(
+        "Error al cargar productos"
+      );
+
+    } finally {
+
+      setLoading(false);
+    }
+  };
+
+  cargar();
+
+}, [
+  filtros.categoriaId,
+  filtros.precioMin,
+  filtros.precioMax,
+  filtros.sort
+]);
+
+  return {
+    productos,
+    loading,
+    error, // ← NUEVO
   };
 };

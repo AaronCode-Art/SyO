@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Encabezado from '../../components/encabezado/Encabezado';
 import Footer from '../../components/footer/Footer';
+import PageLoader from "../../components/loading/PageLoader";
 import './NosotrosPages.css';
 
 const NosotrosPages: React.FC = () => {
@@ -34,7 +35,7 @@ const NosotrosPages: React.FC = () => {
           </div>
           <div className="nosotros-imagen">
             <div className="nosotros-imagen-glow" />
-            <img src="/src/assets/nosotros-hero.png" alt="Equipo S&O" />
+            <img src="https://res.cloudinary.com/dfmveqhud/image/upload/q_auto/f_auto/v1777427970/9100d340-2590-4b91-8405-0cab25fb8384.png" alt="Equipo S&O" />
           </div>
         </section>
 

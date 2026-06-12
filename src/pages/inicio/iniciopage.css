@@ -137,6 +137,18 @@
 
 @media (max-width: 768px) {
 
+    /* 🔥 GRID 2 COLUMNAS */
+  .fila-productos {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 14px;
+
+    overflow-x: visible;
+  }
+
+
   .seccion-productos-inicio {
     padding: 56px 4%;
   }
