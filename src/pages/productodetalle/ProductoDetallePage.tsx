@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { productoService } from '../../services/productoService';
 import type { ProductoDetalle, ProductoLista } from '../../types/Producto.types';
 import TarjetaProducto from '../../components/producto/TarjetaProducto';
+import { useCarrito } from '../../hooks/carrito/useCarrito';
+import ModalAgregarCarrito from '../../components/modalcompra/ModalAgregarCarrito';
 import './productodetallepage.css';
 import Footer from '../../components/footer/Footer';
 import Encabezado from '../../components/encabezado/Encabezado';
@@ -10,11 +12,14 @@ import Encabezado from '../../components/encabezado/Encabezado';
 const ProductoDetallePage: React.FC = () => {
 
   const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const { agregarAlCarrito } = useCarrito();
 
   const [producto, setProducto] = useState<ProductoDetalle | null>(null);
   const [productosRelacionados, setProductosRelacionados] = useState<ProductoLista[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   useEffect(() => {
     const cargarPagina = async () => {
@@ -103,10 +108,26 @@ const ProductoDetallePage: React.FC = () => {
             )}
 
             <div className="detalle-acciones">
-              <button className="btn-comprar-detalle" disabled={sinStock}>
+              <button
+                className="btn-comprar-detalle"
+                disabled={sinStock}
+                onClick={async () => {
+                  if (!producto || sinStock) return;
+                  const ok = await agregarAlCarrito(producto.idproducto, 1);
+                  if (ok) navigate('/carrito');
+                }}
+              >
                 {sinStock ? 'Sin stock' : 'Comprar ahora'}
               </button>
-              <button className="btn-carrito" disabled={sinStock}>
+              <button
+                className="btn-carrito"
+                disabled={sinStock}
+                onClick={async () => {
+                  if (!producto || sinStock) return;
+                  const ok = await agregarAlCarrito(producto.idproducto, 1);
+                  if (ok) setMostrarModal(true);
+                }}
+              >
                 Añadir al carrito
               </button>
             </div>
@@ -119,7 +140,11 @@ const ProductoDetallePage: React.FC = () => {
             <h2 className="seccion-relacionados-titulo">Te puede interesar</h2>
             <div className="productos-relacionados-grid">
               {productosRelacionados.map((prod) => (
-                <TarjetaProducto key={prod.idproducto} producto={prod} />
+                <TarjetaProducto
+                  key={prod.idproducto}
+                  producto={prod}
+                  onAgregarAlCarrito={agregarAlCarrito}
+                />
               ))}
             </div>
           </div>
@@ -128,6 +153,13 @@ const ProductoDetallePage: React.FC = () => {
       </div>
     </div>
     <Footer/>
+
+    <ModalAgregarCarrito
+      open={mostrarModal}
+      productoNombre={producto.nombre}
+      onCerrar={() => setMostrarModal(false)}
+      onIrPagar={() => navigate('/carrito')}
+    />
     </div>
   );
 };

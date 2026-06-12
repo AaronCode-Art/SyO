@@ -7,6 +7,7 @@ import Encabezado from '../../components/encabezado/Encabezado';
 import type { CategoriaDetalle } from '../../types/Categoria.types';
 import { useProductos } from '../../hooks/producto/useProductos';
 import TarjetaProducto from '../../components/producto/TarjetaProducto';
+import { useCarrito } from '../../hooks/carrito/useCarrito';
 import './productocatpage.css';
 
 /**
@@ -22,6 +23,8 @@ const ProductoCatPage: React.FC = () => {
 
   // Cargamos los productos de esta categoría
   const { productos, loading: loadingProductos, error } = useProductos(id);
+
+  const { agregarAlCarrito } = useCarrito();
 
   // Cargamos el detalle completo de la categoría (incluye descripción)
   useEffect(() => {
@@ -71,7 +74,8 @@ const ProductoCatPage: React.FC = () => {
         {productos.map((producto) => (
           <TarjetaProducto 
             key={producto.idproducto} 
-            producto={producto} 
+            producto={producto}
+            onAgregarAlCarrito={agregarAlCarrito}
           />
         ))}
       </div>
